@@ -29,26 +29,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  StreamSubscription streamSubscription;
-
-  @override
-  void initState() {
-    streamSubscription = MyApp.model.counterUpdates.listen((newVal) => setState(() {
-          _counter = newVal;
-        }));
-
-    super.initState();
-  }
-
-  // Although this state will not get destroyed as long as the App is running its good
-  // style to always free subscriptions
-  @override
-  void dispose() {
-      streamSubscription?.cancel();
-      super.dispose();
-    }
-
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -62,18 +42,27 @@ class _MyHomePageState extends State<MyHomePage> {
             new Text(
               'You have pushed the button this many times:',
             ),
-            new Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
+            StreamBuilder<int>(
+                initialData: 0,
+                stream: MyApp.model.counterUpdates,
+                builder: (context, snappShot) {
+                  String valueAsString = 'NoData';
+                  if (snappShot != null && snappShot.hasData) {
+                    valueAsString = snappShot.data.toString();
+                  }
+                  return Text(
+                    valueAsString,
+                    style: Theme.of(context).textTheme.display1,
+                  );
+                }),
           ],
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-                onPressed: MyApp.model.incrementCounter,
+        onPressed: MyApp.model.incrementCounter,
         tooltip: 'Increment',
         child: new Icon(Icons.add),
-      ), 
+      ),
     );
   }
 }
