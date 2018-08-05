@@ -9,7 +9,7 @@ void main() {
  
       timerObservable.listen(print);
 
-          // this is only to prevent the testing framework to kill this process before all items on the Stream are processed
+    // this is only to prevent the testing framework to kill this process before all items on the Stream are processed
     await Future.delayed(Duration(seconds: 5));
 
   });
