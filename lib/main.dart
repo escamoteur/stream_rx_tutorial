@@ -43,18 +43,19 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             StreamBuilder<int>(
-                initialData: 0,
-                stream: MyApp.model.counterUpdates,
-                builder: (context, snappShot) {
-                  String valueAsString = 'NoData';
-                  if (snappShot != null && snappShot.hasData) {
-                    valueAsString = snappShot.data.toString();
-                  }
-                  return Text(
-                    valueAsString,
-                    style: Theme.of(context).textTheme.display1,
-                  );
-                }),
+              initialData: 0,
+              stream: MyApp.model.counterUpdates,
+              builder: (context, snappShot) {
+                String valueAsString = 'NoData';
+                if (snappShot != null && snappShot.hasData) {
+                  valueAsString = snappShot.data.toString();
+                }
+                return Text(
+                  valueAsString,
+                  style: Theme.of(context).textTheme.display1,
+                );
+              },
+            ),
           ],
         ),
       ),
