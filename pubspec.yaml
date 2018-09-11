@@ -11,6 +11,8 @@ version: 1.0.0+1
 
 dependencies:
   rxdart: ^0.18.1
+  rx_command: 2.0.5
+  cloud_firestore: any
   flutter:
     sdk: flutter
 

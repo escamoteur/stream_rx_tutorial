@@ -16,6 +16,8 @@ void main() {
 
     // this is only to prevent the testing framework to kill this process before all items on the Stream are processed
     await Future.delayed(Duration(seconds: 5));
+
+    controller.close();
   });
 
   test('Create Timer Observable', () async {
@@ -58,7 +60,7 @@ void main() {
     await Future.delayed(Duration(seconds: 5));
 
     // This will cancel all Subscriptions
-    subject.close;
+    subject.close();
   });
 
   test('BehaviourSubject', () async {
@@ -78,7 +80,7 @@ void main() {
     await Future.delayed(Duration(seconds: 5));
 
     // This will cancel all Subscriptions
-    subject.close;
+    subject.close();
   });
 
   test('Map toUpper', () async {
@@ -94,15 +96,13 @@ void main() {
     await Future.delayed(Duration(seconds: 5));
 
     // This will cancel all Subscriptions
-    subject.close;
+    subject.close();
   });
 
   test('Map toUpper from int', () async {
     var subject = new PublishSubject<int>();
 
-    subject.map((intValue) => intValue.toString())
-      .map((item) => item.toUpperCase())
-        .listen(print);
+    subject.map((intValue) => intValue.toString()).map((item) => item.toUpperCase()).listen(print);
 
     subject.add(1);
     subject.add(2);
@@ -112,6 +112,55 @@ void main() {
     await Future.delayed(Duration(seconds: 5));
 
     // This will cancel all Subscriptions
-    subject.close;
+    subject.close();
+  });
+
+  test('where', () async {
+    var subject = new PublishSubject<int>();
+
+    subject.where((val) => val.isOdd).listen((val) => print('This only prints odd numbers: $val'));
+
+    subject
+        .where((val) => val.isEven)
+        .listen((val) => print('This only prints even numbers: $val'));
+
+    subject.add(1);
+    subject.add(2);
+    subject.add(3);
+
+    // this is only to prevent the testing framework to kill this process before all items on the Stream are processed
+    await Future.delayed(Duration(seconds: 5));
+
+    // This will cancel all Subscriptions
+    subject.close();
+  });
+
+  test('debounce', () async {
+    var subject = new PublishSubject<String>();
+
+    subject.debounce(new Duration(milliseconds: 500)).listen((s) => print(s));
+
+    subject.add('A');
+    subject.add('AB');
+
+    await Future.delayed(Duration(milliseconds: 200));
+
+    subject.add("ABC");
+    // There is no output yet
+
+    await Future.delayed(Duration(milliseconds: 700));
+
+    // now we receive the latest value
+
+    // this is only to prevent the testing framework to kill this process before all items on the Stream are processed
+    await Future.delayed(Duration(seconds: 5));
+
+    // This will cancel all Subscriptions
+    subject.close();
+
+
+
+
+
   });
 }

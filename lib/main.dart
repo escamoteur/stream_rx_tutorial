@@ -43,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
               'You have pushed the button this many times:',
             ),
             StreamBuilder<int>(
-              initialData: 0,
+             // initialData: 0,
               stream: MyApp.model.counterUpdates,
               builder: (context, snappShot) {
                 String valueAsString = 'NoData';
@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: new FloatingActionButton(
-        onPressed: MyApp.model.incrementCounter,
+        onPressed: MyApp.model.addCommand,
         tooltip: 'Increment',
         child: new Icon(Icons.add),
       ),

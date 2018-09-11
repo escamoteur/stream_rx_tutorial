@@ -1,15 +1,18 @@
 import 'dart:async';
 
+import 'package:rxdart/rxdart.dart';
+import 'package:rx_command/rx_command.dart';
+
 class Model
 {
     int _counter = 0;
-    StreamController _streamController = new StreamController<int>();
+    RxCommand<int,int> addCommand;
 
-    Stream<int> get counterUpdates => _streamController.stream;
-
-    void incrementCounter()
+    Model()
     {
-        _counter++;
-        _streamController.add(_counter);
+      addCommand = RxCommand.createAsync3<int,int>((_) async => await Future.delayed(Duration(milliseconds: 200),()=>_counter++));
     }
+
+    Stream<int> get counterUpdates => addCommand.results;
+
 }
